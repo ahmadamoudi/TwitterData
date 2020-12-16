@@ -6,30 +6,29 @@
 
 #Collecting Data from Twitter 
 
+# importing required libraries
 import tweepy
 import csv
 import datetime
 import time
-#from pymongo import MongoClient
 
+
+#define and store your credintials
 consumer_key = ''
 consumer_secret = ''
 
 access_token = ''
 access_token_secret = ''
 
+#Tweepy auth
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-
-#client = MongoClient('localhost', 27017)
-
-#connection
-#db = client['localdb'] #There are two ways you can use the previous command or you can use the below line.
-#db = client.localdb
-
+#Enter the keyword (kw) that you want to collect tweets based on it
 kw = input('Enter keyword: ')
+
+#Enter the number of the tweets you want to fetch
 num = int(input('Number of tweet (enter -1 if you want max number) : '))
 
 # Open/Create a file to append data
@@ -43,6 +42,7 @@ csvWriter.writerow(['Tweet_Date', 'user_id','username','Followers','Verified', '
 
 apicalls = 0
 count =0
+
 for tweet in tweepy.Cursor(api.search,q=kw,count=100).items():
     
     apicalls = apicalls+1
@@ -51,14 +51,13 @@ for tweet in tweepy.Cursor(api.search,q=kw,count=100).items():
         apicalls = 0
         time.sleep(15*60)
     
-    csvWriter.writerow([tweet.created_at,tweet.user.screen_name,tweet.user.followers_count, tweet.text.encode('utf-8')])
-    t = tweet._json
-    t['_id'] = t['id_str']
-    t['timestamp'] = datetime.datetime.strptime(t['created_at'], '%a %b %d %H:%M:%S +0000 %Y') 
-    #db[kw].insert_one(t)
+    
+    csvWriter.writerow([tweet.created_at, tweet.user.screen_name, tweet.user.followers_count, tweet.text.encode('utf-8')])
+    counter=counter+1
+    
     if num==-1:
         pass
-    elif count==num:
+    elif counter==num:
         break
         
 
