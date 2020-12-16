@@ -34,13 +34,13 @@ kw = input('Enter keyword: ')
 num = int(input('Number of tweet (enter -1 if you want max number) : '))
 
 # Open/Create a file to append data
-csvFile = open(kw+'.csv', 'a')
+#csvFile = open(kw+'.csv', 'a')
 
 #Use csv Writer
-csvWriter = csv.writer(csvFile)
+#csvWriter = csv.writer(csvFile)
 
 #Columns that you want to print in CSV file
-csvWriter.writerow(['Tweet_Date', 'user_id','username','Followers','Verified', 'Tweet_text'])
+#csvWriter.writerow(['Tweet_Date', 'user_id','username','Followers','Verified', 'Tweet_text'])
 
 apicalls = 0
 count =0
@@ -52,7 +52,7 @@ for tweet in tweepy.Cursor(api.search,q=kw,count=100).items():
         apicalls = 0
         time.sleep(15*60)
     
-    csvWriter.writerow([tweet.created_at,tweet.user.screen_name,tweet.user.followers_count, tweet.text.encode('utf-8')])
+    #csvWriter.writerow([tweet.created_at,tweet.user.screen_name,tweet.user.followers_count, tweet.text.encode('utf-8')])
     t = tweet._json
     t['_id'] = t['id_str']
     t['timestamp'] = datetime.datetime.strptime(t['created_at'], '%a %b %d %H:%M:%S +0000 %Y') 
